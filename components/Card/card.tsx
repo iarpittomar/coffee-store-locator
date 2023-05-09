@@ -17,7 +17,14 @@ const Card: React.FC<ICard> = ({ name, href, imageUrl }) => {
           <h2>{name}</h2>
         </div>
         <div className={styles.cardImageWrapper}>
-          <Image src={imageUrl} width={260} height={160} alt="card-image" />
+          <Image
+            className={styles.cardImage}
+            src={imageUrl}
+            width={260}
+            height={160}
+            alt="card-image"
+            unoptimized
+          />
         </div>
       </div>
     </Link>

@@ -4,10 +4,29 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Banner from "@/components/banner";
 import Card from "@/components/Card/card";
+import coffeeStoresData from "@/data/coffee-stores.json";
+interface ICoffeeStores {
+  id: string;
+  name: string;
+  imgUrl: string;
+  websiteUrl: string;
+  address: string;
+  neighbourhood: string;
+}
+interface IHome {
+  coffeeStores: ICoffeeStores[];
+}
 
-const inter = Inter({ subsets: ["latin"] });
+export async function getStaticProps() {
+  console.log("Hi hello");
+  return {
+    props: {
+      coffeeStores: coffeeStoresData,
+    }, // will be passed to the page as props
+  };
+}
 
-export default function Home() {
+const Home: React.FC<IHome> = ({ coffeeStores }) => {
   const handleOnBannerBtnClick = () => {
     console.log("button clicked");
   };
@@ -33,27 +52,24 @@ export default function Home() {
             alt="hero image"
           />
         </div>
-        <div className={styles.cardLayout}>
-          <Card
-            imageUrl="/static/hero-image.png"
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            className={styles.card}
-          />
-          <Card
-            imageUrl="/static/hero-image.png"
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            className={styles.card}
-          />
-          <Card
-            imageUrl="/static/hero-image.png"
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            className={styles.card}
-          />
-        </div>
+        {coffeeStores.length > 0 && (
+          <>
+            <h2 className={styles.heading2}>Toronto Stores</h2>
+            <div className={styles.cardLayout}>
+              {coffeeStores.map((coffeeStore) => (
+                <Card
+                  key={coffeeStore.id}
+                  imageUrl={coffeeStore.imgUrl}
+                  name={coffeeStore.name}
+                  href={`coffee-store/${coffeeStore.id}`}
+                ></Card>
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
-}
+};
+
+export default Home;
